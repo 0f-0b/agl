@@ -2,12 +2,12 @@
 
 #include <basis/seadTypes.h>
 
-namespace agl {
+#include "detail/aglGPUMemBlockMgr.h"
 
+namespace agl {
 class GPUMemBlockBase;
 
 namespace detail {
-
 class GPUMemBlockMgrHeapEx;
 class MemoryPoolType;
 
@@ -25,9 +25,19 @@ public:
     void freeToHeap(GPUMemBlockBase*);
     bool isAllocatable(const MemoryPoolType&, u64, s32) const;
 
+    void* get_0x10() { return _0x10; }
+
+    MemoryPool* get_0x18() { return &_0x18; }
+
 private:
-    GPUMemBlockBase* _120;
+    void* _padding_0x0[0x2];
+    void* _0x10;
+    MemoryPool _0x18;
+    void* _padding_0x120[0x2];
 };
+
+// TODO not sure
+static_assert(sizeof(MemoryPoolHeap) == 0x130);
 
 }  // namespace detail
 }  // namespace agl
