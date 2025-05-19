@@ -378,7 +378,7 @@ const char* ResShaderArchiveData::getExtension() {
 }
 
 const char* ResBinaryShaderArchiveData::getExtension() {
-    return "sharcfb";
+    return "sharcb";
 }
 
 }  // namespace agl

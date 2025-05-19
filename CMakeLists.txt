@@ -26,11 +26,15 @@ add_library(agl OBJECT
   include/common/aglTextureData.h
   include/common/aglTextureDataSerializer.h
   include/common/aglTextureEnum.h
+  include/common/aglTextureSampler.h
+  include/common/aglUniformBlock.h
 
+  include/detail/aglCompSel.h
   include/detail/aglFileIOMgr.h
   include/detail/aglGPUMemBlockMgr.h
   include/detail/aglMemoryPoolHeap.h
   include/detail/aglPrivateResource.h
+  include/detail/aglSamplerObject.h
   include/detail/aglShaderHolder.h
   include/detail/aglSurface.h
 
@@ -53,6 +57,7 @@ add_library(agl OBJECT
   include/g3d/aglNW4FToNN.h
 
   include/postfx/aglBloom.h
+  include/postfx/aglColorCorrection.h
   include/postfx/aglDepthOfField.h
 
   include/shader_text/aglShaderTextClause.h
@@ -63,6 +68,7 @@ add_library(agl OBJECT
   include/shader_text/aglShaderTextSyntaxTree.h
 
   include/utility/aglAtomicPtrArray.h
+  include/utility/aglDebugTexturePage.h
   include/utility/aglDevTools.h
   include/utility/aglParameter.h
   include/utility/aglParameterCurve.hpp
@@ -70,22 +76,32 @@ add_library(agl OBJECT
   include/utility/aglParameterList.h
   include/utility/aglParameterObj.h
   include/utility/aglParameterStringMgr.h
+  include/utility/aglPrimitiveTexture.h
   include/utility/aglResParameter.h
   include/utility/aglScreenShotMgr.h
-  
+
+  src/common/aglGPUMemAddr.cpp
+  src/common/aglGPUMemBlock.cpp
+  src/common/aglTextureSampler.cpp
+  src/common/aglUniformBlock.cpp
+
+  src/detail/aglCompSel.cpp
   src/detail/aglGPUMemBlockMgr.cpp
+  src/detail/aglSamplerObject.cpp
 
   src/driver/aglGraphicsDriverMgr.cpp
   src/driver/aglNVNMgr.cpp
 
   src/utility/aglAtomicPtrArray.cpp
+  src/utility/aglDebugTexturePage.cpp
   src/utility/aglParameter.cpp
   src/utility/aglParameterIO.cpp
   src/utility/aglParameterList.cpp
   src/utility/aglParameterObj.cpp
   src/utility/aglParameterStringMgr.cpp
+  src/utility/aglPrimitiveTexture.cpp
   src/utility/aglResParameter.cpp
-  
+
   src/utility/common/aglResCommon.cpp
   src/utility/common/aglResShaderArchive.cpp
 )
