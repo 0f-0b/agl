@@ -1,6 +1,7 @@
 #pragma once
 
 #include <nvn/nvn.h>
+#include <nvn/nvn_FuncPtrInline.h>
 #include <container/seadPtrArray.h>
 #include <heap/seadDisposer.h>
 #include <hostio/seadHostIONode.h>
@@ -10,26 +11,27 @@
 #include <thread/seadCriticalSection.h>
 #include "common/aglGPUCommon.hpp"
 
-namespace agl::detail {
+namespace agl {
+class GPUMemBlockBase;
+
+namespace detail {
 
 using MemoryPoolDriverBitFlag = sead::BitFlag32;
 
-constexpr s32 VALID_POOL_TYPE_VALUE = -1;
 constexpr s32 cGPUAccessMask = 0xF0000000;
 constexpr u64 cGPUPhysicalMemorySizeAlignment = 0x1000;
 
-class MemoryPoolType : MemoryPoolDriverBitFlag {
+class MemoryPoolType : public MemoryPoolDriverBitFlag {
 public:
     MemoryPoolType() : MemoryPoolDriverBitFlag() {}
     MemoryPoolType(s32 p_value) : MemoryPoolDriverBitFlag(p_value) {}
 
-    MemoryPoolType convert(MemoryAttribute attribute);
+    static MemoryPoolType convert(MemoryAttribute attribute);
 
     bool IsValid() const { return (*this & cValidPoolType) == cValidPoolType; }
 
     void MarkValid() { *this = *this | cValidPoolType; }
 
-private:
     static const MemoryPoolType cInvalidPoolType;
     static const MemoryPoolType cValidPoolType;
 };
@@ -38,11 +40,27 @@ class MemoryPool {
 public:
     MemoryPool();
 
-    void initialize(void* storage_1, u64 storage_2, const MemoryPoolType& flags);
-    void initialize(void* map_virtual_1, u64 storage, const MemoryPoolType& flags,
-                    const MemoryPool& map_virtual_2, s32 map_virtual_3);
+    void initialize(void* buffer, u64 size, const MemoryPoolType& flags);
+    void initialize(void* buffer, u64 size, const MemoryPoolType& flags, const MemoryPool& parent,
+                    s32 alignment);
 
     void finalize();
+
+    void* map() const { return nvnMemoryPoolMap(&mDriverPool); }
+
+    void flushMappedRange(u64 offset, u64 size) const {
+        return nvnMemoryPoolFlushMappedRange(&mDriverPool, offset, size);
+    }
+
+    void invalidateMappedRange(u64 offset, u64 size) const {
+        return nvnMemoryPoolInvalidateMappedRange(&mDriverPool, offset, size);
+    }
+
+    bool isCPUCached() const {
+        return nvnMemoryPoolGetFlags(&mDriverPool) & NVN_MEMORY_POOL_FLAGS_CPU_CACHED;
+    }
+
+    const MemoryPoolType& getType() const { return mMemoryType; }
 
 private:
     NVNmemoryPool mDriverPool;
@@ -79,6 +97,7 @@ public:
     virtual ~GPUMemBlockMgr();
 
     void initialize(sead::Heap* heap1, sead::Heap* heap2);
+    bool tryAllocMemory(GPUMemBlockBase*, sead::Heap*, u64, s32, MemoryAttribute);
     void enableSharedMemoryPool(bool enabled);
     static u64 calcGPUMemorySize(u64 userSize);
     static s32 calcGPUMemoryAlignment(s32 userAlignment);
@@ -98,4 +117,5 @@ private:
 };
 static_assert(sizeof(GPUMemBlockMgr) == 0x88);
 
-}  // namespace agl::detail
+}  // namespace detail
+}  // namespace agl
