@@ -6,6 +6,8 @@
 namespace agl {
 class DrawContext;
 class DisplayList;
+
+enum class PrimitiveRestartIndex {};
 }  // namespace agl
 
 namespace agl::driver {
@@ -16,13 +18,18 @@ public:
     GraphicsDriverMgr();
     virtual ~GraphicsDriverMgr();
 
+    agl::DisplayList* getDefaultCommandBuffer();
     void waitDrawDone() const;
-    void dumpInfo() const;
     void setPointLimits(agl::DrawContext* draw_context, float min, float max) const;
     void setPointSize(agl::DrawContext* draw_context, float point_size) const;
     void setLineWidth(agl::DrawContext* draw_context, float line_width) const;
+    void setPrimitiveRestartIndex(agl::DrawContext* draw_context, agl::PrimitiveRestartIndex) const;
+    void setDepthClamp(agl::DrawContext* draw_context, bool) const;
+    void setPolygonOffset(agl::DrawContext* draw_context, float, float) const;
 
-    agl::DisplayList* getDefaultCommandBuffer();
+    virtual void dumpInfo() const {}
+
+    virtual void waitDrawDone(agl::DrawContext*) const {}
 
 #ifdef SEAD_DEBUG
     void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
@@ -30,7 +37,7 @@ public:
 #endif
 
 protected:
-    void initialize_(sead::Heap p_heap);
+    void initialize_(sead::Heap* p_heap);
 
 private:
     agl::DisplayList* mDefaultCommandBuffer;
