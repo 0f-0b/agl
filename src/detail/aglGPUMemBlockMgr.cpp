@@ -2,7 +2,7 @@
 
 namespace agl::detail {
 const MemoryPoolType MemoryPoolType::cInvalidPoolType(0);
-const MemoryPoolType MemoryPoolType::cValidPoolType(VALID_POOL_TYPE_VALUE);
+const MemoryPoolType MemoryPoolType::cValidPoolType(0x80000000);
 
 SEAD_SINGLETON_DISPOSER_IMPL(GPUMemBlockMgr)
 

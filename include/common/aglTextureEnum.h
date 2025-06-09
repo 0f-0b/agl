@@ -1,8 +1,10 @@
 #pragma once
 
+#include <basis/seadTypes.h>
+
 namespace agl {
 
-enum class TextureType {
+enum class TextureType : u8 {
     cTextureType_1D,
     cTextureType_2D,
     cTextureType_3D,
@@ -13,7 +15,7 @@ enum class TextureType {
     cTextureType_2D_MSAA_Array,
 };
 
-enum class TextureFormat {
+enum class TextureFormat : u8 {
     cTextureFormat_Invalid,
     cTextureFormat_R8_uNorm,
     cTextureFormat_R8_uInt,
@@ -80,8 +82,13 @@ enum class TextureFormat {
     cTextureFormat_Num,
 };
 
-enum class TextureAttribute {};
+enum class TextureAttribute {
+    _0 = 0,
+    _2 = 2,
+};
 
-enum class MultiSampleType {};
+enum class MultiSampleType {
+    _0 = 0,
+};
 
 }  // namespace agl
