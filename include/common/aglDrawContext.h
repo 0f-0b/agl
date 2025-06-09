@@ -30,17 +30,9 @@ public:
     void setCommandBufferTemporary();
 
 private:
-    void* gap[5];
-    DisplayList* mCommandBuffer;
-    const RenderBuffer* mBoundRenderBuffer;
-    u8 _100;
-    ShaderMode mShaderMode;
-    u8 _102;
-    u8 _103;
-    u32 _104;
-    u32 _10c;
-    void* gap2[19];
-    long mTextureDirty;
+    void* _padding[0x18];
 };
+
+static_assert(sizeof(DrawContext) == 0x1b0);
 
 }  // namespace agl

@@ -13,7 +13,7 @@ public:
 
     void releaseTexture();
     void updateTexId_(s32 newID);
-    NVNtexture_ operator=(const NVNtexture_& other);
+    NVNtexture_& operator=(const NVNtexture_& other);
     bool registerTexture(const NVNtexture*, const NVNtextureView*, const char*, bool);
 
     void setReference_() const;

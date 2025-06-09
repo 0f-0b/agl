@@ -3,6 +3,10 @@
 #include <basis/seadTypes.h>
 
 namespace agl {
+namespace detail {
+class MemoryPool;
+}
+class GPUMemBlockBase;
 
 enum class MemoryAttribute : u32 {
     Default = 0,
@@ -19,12 +23,9 @@ enum class MemoryAttribute : u32 {
 };
 
 struct GPUMemVoidAddr {
-    // FIXME: what are thoses?
-    void* _0;
-    void* _8;
-    u64 mAddress;
-
-    u64 getGPUMemBlock() const { return mAddress; }
+    detail::MemoryPool* memory_pool = nullptr;
+    u32 offset = 0;
+    const GPUMemBlockBase* mem_block = nullptr;
 };
 
 }  // namespace agl
